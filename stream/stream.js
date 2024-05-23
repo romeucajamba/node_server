@@ -2,9 +2,10 @@
 
 //process.stdin.pipe(process.stdout)
 
-import { Readable } from "node:stream";
+import { Readable, Transform, Writable } from "node:stream";
 
-class WorkWithStream extends Readable{
+//Trabalhando com stream de leitura
+class ReadableStream extends Readable{
     
     //Método obrigatório
     //Método para retornar os dados dessa Stream
@@ -12,16 +13,38 @@ class WorkWithStream extends Readable{
     _read(){
         const number = this.index++
 
-        if(number >100)
-            this.push(null)
-        else{
-            //Convertendo para o formato Buffor
-            const buf = Buffer.from(String(number))
-            this.push(buf)
+       setTimeout(() => {
+            if(number >100)
+                this.push(null)
+            else{
+                 //Convertendo para o formato Buffor
+                 //Buffer só permite String, não number
+                 const buf = Buffer.from(String(number))
+                this.push(buf)
 
-        }
+             }
+       }, 1000)
             
     }
 }
 
-new WorkWithStream().pipe(process.stdout)
+//Stream de transformação
+//Transicionando dados
+//Transformando dado depois da leitura
+class TransformStream extends Transform {
+    _transform(chunk, encoding, callback){
+        const transformed = Number(chunk.toString()) * -1
+
+        callback(null,Buffer.from(String(transformed)))
+    }
+}
+//Stream de escrita
+class WriteableStream extends Writable{
+    _write(chunk, encoding, callback){
+        console.log(Number(chunk.toString()) * 10)
+        callback()
+    }
+}
+
+new ReadableStream()
+.pipe(new TransformStream).pipe(new WriteableStream())
