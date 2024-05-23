@@ -1,8 +1,8 @@
 /// Trabalhando com STREAM
 
 //process.stdin.pipe(process.stdout)
-
 import { Readable, Transform, Writable } from "node:stream";
+
 
 //Trabalhando com stream de leitura
 class ReadableStream extends Readable{
@@ -35,7 +35,7 @@ class TransformStream extends Transform {
     _transform(chunk, encoding, callback){
         const transformed = Number(chunk.toString()) * -1
 
-        callback(null,Buffer.from(String(transformed)))
+        callback(null, Buffer.from(String(transformed)))
     }
 }
 //Stream de escrita
