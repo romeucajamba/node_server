@@ -1,8 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { Database } from "../db/database.js";
 
-
-
 //Meu banco de dados  
 const database = new Database()
 
