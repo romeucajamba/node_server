@@ -31,5 +31,12 @@ export const routes = [
             database.insert('users', user)
             return response.writeHead(201).end("Usuário criado!!")
         }
-    }
+    },
+    {
+        method:'DELETE',
+        path:'/users/:userId',
+        handler: (request, response) => {
+            return response.end()
+        }
+    },
 ]
