@@ -1,26 +1,26 @@
 import http from "node:http";
+import { json } from "./middleware/json.js";
+import { routes } from "./routes/routes.js";
 
-const users = []
+
 
 
 const server = http.createServer(async (request, response) => {
     const { method, url } = request
 
-    if(method === "GET" && url === "/users")
-        
-        return response.setHeader("Content-type", "application/json").end(JSON.stringify(users))
+    //Middleware com a funcionalidade de 'Stream' leitura, transformação e escrita dos pacotes(Vídeo, audio)
+   await json(request, response)
 
-    if(method === "POST" && url === "/users"){
-        const { name, email } = body
+   const route = routes.find(route => {
+        return route.method == method && route.path == url
+   })
 
-        users.push({
-            id:1,
-            name,
-            email
-         })
-    }
+   if(route){
+    return route.handler(request, response)
+   }
+
+   return response.writeHead(201).end()
        
-        return response.writeHead().end("Usuário criado!!")
 })
 
 server.listen(3333)
