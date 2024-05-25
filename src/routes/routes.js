@@ -6,14 +6,6 @@ import { regexFunction } from '../utils/regex_function.js';
 const database = new Database()
 
 export const routes = [
-    {
-        method:'GET',
-        path:'/users',
-        handler: (request, response) => {
-            const users = database.select('users')
-            return response.end(JSON.stringify(users))
-        }
-    },
 
     {
         method:'POST',
@@ -31,6 +23,29 @@ export const routes = [
             return response.writeHead(201).end(user.id)
         }
     },
+
+    {
+        method:'GET',
+        path:'/users',
+        handler: (request, response) => {
+            const users = database.select('users')
+            return response.end(JSON.stringify(users))
+        }
+    },
+
+    {
+        method:'PUT',
+        path: '/users/:userId',
+        handler: (request, response) => {
+            const { id } = request.params
+            const { name, email } = request.body
+
+            database.update('users', id, {name, email})
+
+            return response.writeHead(204).end()
+        }
+    },
+
     {
         method:'DELETE',
         path: '/users/:userId',
