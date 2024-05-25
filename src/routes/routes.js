@@ -18,7 +18,7 @@ export const routes = [
         method:'POST',
         path:'/users',
         handler: (request, response) => {
-            const { name, email } = body
+            const { name, email } = request.body
 
             const user = {
                  id: randomUUID(),
