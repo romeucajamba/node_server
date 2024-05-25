@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { Database } from "../db/database.js";
+import { regexFunction } from '../utils/regex_function.js';
 
 //Meu banco de dados  
 const database = new Database()
@@ -27,14 +28,18 @@ export const routes = [
                 }
 
             database.insert('users', user)
-            return response.writeHead(201).end("Usuário criado!!")
+            return response.writeHead(201).end(user.id)
         }
     },
     {
         method:'DELETE',
-        path:'/users/:userId',
+        path: '/users/:userId',
         handler: (request, response) => {
-            return response.end()
+            const { id } = request.params
+
+            database.delete('users', id)
+
+            return response.writeHead(204).end()
         }
     },
 ]
